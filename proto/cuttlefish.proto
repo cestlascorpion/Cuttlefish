@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package  Cuttlefish;
+
+option go_package = "github.com/cestlascorpion/Cuttlefish;cuttlefish";
+
+service cuttlefish {
+  // TODO:
+}
