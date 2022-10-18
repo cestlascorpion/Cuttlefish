@@ -8,6 +8,23 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type ServerConfig struct {
+	Addr     string `json:"addr,omitempty" yaml:"addr"`
+	Name     string `json:"name,omitempty" yaml:"name"`
+	LogLevel string `json:"log_level,omitempty" yaml:"log_level"`
+}
+
+func (s *ServerConfig) check() bool {
+	if len(s.Addr) == 0 || len(s.Name) == 0 {
+		log.Errorf("invalid server parameter")
+		return false
+	}
+	if len(s.LogLevel) == 0 {
+		s.LogLevel = "debug"
+	}
+	return true
+}
+
 type RedisConfig struct {
 	Network   string `json:"network,omitempty" yaml:"network"`
 	Addr      string `json:"addr,omitempty" yaml:"addr"`
@@ -15,6 +32,7 @@ type RedisConfig struct {
 	Password  string `json:"password,omitempty" yaml:"password"`
 	Database  int    `json:"database,omitempty" yaml:"database"`
 	KeyPrefix string `json:"key_prefix,omitempty" yaml:"key_prefix"`
+	KeyExpire int    `json:"key_expire,omitempty" yaml:"key_expire"`
 }
 
 func (r *RedisConfig) check() bool {
@@ -29,11 +47,16 @@ func (r *RedisConfig) check() bool {
 		log.Errorf("invalid redis key prefix")
 		return false
 	}
+	if r.KeyExpire == 0 {
+		log.Warnf("key expire not configured")
+		r.KeyExpire = int(defaultExpire.Seconds())
+	}
 	return true
 }
 
 type Config struct {
-	Redis *RedisConfig `json:"redis,omitempty" yaml:"redis"`
+	Server *ServerConfig `json:"server,omitempty" yaml:"server"`
+	Redis  *RedisConfig  `json:"redis,omitempty" yaml:"redis"`
 }
 
 func NewConfig(ctx context.Context, path string) (*Config, error) {
@@ -62,19 +85,29 @@ func NewConfig(ctx context.Context, path string) (*Config, error) {
 }
 
 func (c *Config) Check() bool {
+	if c.Server == nil {
+		log.Errorf("server config missing")
+		return false
+	}
 	if c.Redis == nil {
 		log.Errorf("redis config missing")
 		return false
 	}
-	return c.Redis.check()
+	return c.Server.check() && c.Redis.check()
 }
 
 func NewTestConfig() *Config {
 	return &Config{
+		Server: &ServerConfig{
+			Addr:     ":8080",
+			Name:     "cuttlefish",
+			LogLevel: "debug",
+		},
 		Redis: &RedisConfig{
 			Network:   "tcp",
 			Addr:      "127.0.0.1:6379",
 			KeyPrefix: defaultPrefix,
+			KeyExpire: int(defaultExpire.Seconds()),
 		},
 	}
 }

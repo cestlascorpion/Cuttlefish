@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/cestlascorpion/cuttlefish/utils"
 	"github.com/go-redis/redis/v8"
@@ -11,6 +12,7 @@ import (
 
 type Redis struct {
 	prefix string
+	expire time.Duration
 	client *redis.Client
 }
 
@@ -31,85 +33,136 @@ func NewRedis(ctx context.Context, conf *utils.Config) (*Redis, error) {
 	return &Redis{
 		client: client,
 		prefix: conf.Redis.KeyPrefix,
+		expire: time.Second * time.Duration(conf.Redis.KeyExpire),
 	}, nil
+}
+
+func (r *Redis) SetTentacle(ctx context.Context, id uint32, field string, value interface{}) error {
+	pipe := r.client.Pipeline()
+	defer pipe.Close()
+
+	key := r.genKey(id)
+	hSetCmd := pipe.HSet(ctx, key, field, value)
+	expireCmd := pipe.Expire(ctx, key, r.expire)
+
+	_, err := pipe.Exec(ctx)
+	if err != nil {
+		log.Errorf("exec err %+v", err)
+		return err
+	}
+
+	err = hSetCmd.Err()
+	if err != nil {
+		log.Errorf("hset %s %s %v err %+v", key, field, value, err)
+		return err
+	}
+
+	err = expireCmd.Err()
+	if err != nil {
+		log.Errorf("expire %s err %+v", key, err)
+		return err
+	}
+
+	return nil
+}
+
+func (r *Redis) SetMultiTentacle(ctx context.Context, id uint32, fields map[string]interface{}) error {
+	pipe := r.client.Pipeline()
+	defer pipe.Close()
+
+	key := r.genKey(id)
+	hmSetCmd := pipe.HMSet(ctx, key, fields)
+	expireCmd := pipe.Expire(ctx, key, r.expire)
+
+	_, err := pipe.Exec(ctx)
+	if err != nil {
+		log.Errorf("exec err %+v", err)
+		return err
+	}
+
+	err = hmSetCmd.Err()
+	if err != nil {
+		log.Errorf("hmset %s %v err %+v", key, fields, err)
+		return err
+	}
+
+	err = expireCmd.Err()
+	if err != nil {
+		log.Errorf("expire %s err %+v", key, err)
+		return err
+	}
+
+	return nil
 }
 
 func (r *Redis) GetTentacle(ctx context.Context, id uint32) (map[string]string, error) {
 	key := r.genKey(id)
 	result, err := r.client.HGetAll(ctx, key).Result()
 	if err != nil {
-		log.Errorf("redis hgetall %s err %+v", key, err)
+		log.Errorf("hgetall %s err %+v", key, err)
 		return nil, err
 	}
 	return result, nil
 }
 
 func (r *Redis) BatchGetTentacle(ctx context.Context, idList []uint32) (map[uint32]map[string]string, error) {
-	resultList := make(map[uint32]map[string]string, len(idList))
+	pipe := r.client.Pipeline()
+	defer pipe.Close()
 
-	keyList := make([]string, 0, len(idList))
+	result := make([]*redis.StringStringMapCmd, 0)
 	for i := range idList {
-		keyList = append(keyList, r.genKey(idList[i]))
+		result = append(result, pipe.HGetAll(ctx, r.genKey(idList[i])))
 	}
 
-	pipeline := r.client.Pipeline()
-	defer pipeline.Close()
+	_, err := pipe.Exec(ctx)
+	if err != nil {
+		log.Errorf("exec err %+v", err)
+		return nil, err
+	}
 
-	for i := range keyList {
-		result, err := r.client.HGetAll(ctx, keyList[i]).Result()
+	resultList := make(map[uint32]map[string]string, len(idList))
+	for i := range result {
+		result, err := result[i].Result()
 		if err != nil {
-			log.Errorf("redis hgetall %s err %+v", keyList[i], err)
+			log.Warnf("hgetall %s err %+v", r.genKey(idList[i]), err)
 			continue
 		}
 		resultList[idList[i]] = result
 	}
-
-	_, err := pipeline.Exec(ctx)
-	if err != nil {
-		log.Errorf("redis pipeliner exec err %+v", err)
-		return nil, err
-	}
 	return resultList, nil
 }
 
-func (r *Redis) AddTentacle(ctx context.Context, id uint32, field string, value interface{}) error {
-	key := r.genKey(id)
-	_, err := r.client.HSet(ctx, key, field, value).Result()
-	if err != nil {
-		log.Errorf("redis hmset %s %s %+v err %+v", key, field, value, err)
-		return err
-	}
-	return nil
-}
+func (r *Redis) DelTentacle(ctx context.Context, id uint32, fields ...string) (bool, error) {
+	pipe := r.client.Pipeline()
+	defer pipe.Close()
 
-func (r *Redis) AddMultiTentacle(ctx context.Context, id uint32, fields map[string]interface{}) error {
 	key := r.genKey(id)
-	_, err := r.client.HMSet(ctx, key, fields).Result()
-	if err != nil {
-		log.Errorf("redis hmset %s %+v err %+v", key, fields, err)
-		return err
-	}
-	return nil
-}
+	hDelCmd := r.client.HDel(ctx, key, fields...)
+	existsCmd := r.client.Exists(ctx, key)
 
-func (r *Redis) DelTentacle(ctx context.Context, id uint32, field string) (bool, error) {
-	key := r.genKey(id)
-	_, err := r.client.HDel(ctx, key, field).Result()
+	_, err := pipe.Exec(ctx)
 	if err != nil {
-		log.Errorf("redis hdel %s %s err %+v", key, field, err)
+		log.Errorf("exec err %+v", err)
 		return false, err
 	}
 
-	exists, err := r.client.Exists(ctx, key).Result()
+	err = hDelCmd.Err()
 	if err != nil {
-		log.Errorf("redis exists %s err %+v", key, err)
+		log.Errorf("hdel %s %v err %+v", key, fields, err)
 		return false, err
 	}
-	return exists > 0, nil
+
+	err = existsCmd.Err()
+	if err != nil {
+		log.Errorf("exists %s err %+v", key, err)
+		return false, err
+	}
+
+	return existsCmd.Val() > 0, nil
 }
 
 func (r *Redis) Close(ctx context.Context) error {
-	return r.Close(ctx)
+	return r.client.Close()
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -6,14 +6,29 @@ option go_package = "github.com/cestlascorpion/Cuttlefish;cuttlefish";
 
 service cuttlefish {
   rpc GetTentacle(GetTentacleReq) returns (GetTentacleResp) {}
+  rpc BatchGetTentacle(BatchGetTentacleReq) returns (BatchGetTentacleResp) {}
   rpc SetTentacle(SetTentacleReq) returns (SetTentacleResp) {}
+  rpc DelTentacle(DelTentacleReq) returns (DelTentacleResp) {}
 }
 
-message Tentacle {
+message TentacleKey {
   uint32 longitude = 1;
   uint32 latitude = 2;
   uint32 sequence = 3;
-  bool connected = 4;
+}
+
+message TentacleVal {
+  bool connected = 1;
+  int64 timestamp = 2;
+}
+
+message Tentacle {
+  TentacleKey key = 1;
+  TentacleVal val = 2;
+}
+
+message TentacleList {
+  repeated Tentacle tentacle_list = 1;
 }
 
 message GetTentacleReq {
@@ -21,14 +36,31 @@ message GetTentacleReq {
 }
 
 message GetTentacleResp {
-  repeated Tentacle tentacle = 1;
+  TentacleList result = 1;
+}
+
+message BatchGetTentacleReq {
+  repeated uint32 id_list = 1;
+}
+
+message BatchGetTentacleResp {
+  map<uint32, TentacleList>  result = 1;
 }
 
 message SetTentacleReq {
   uint32 id = 1;
-  repeated Tentacle tentacle = 2;
+  TentacleList list = 2;
 }
 
 message SetTentacleResp {
   // nothing
+}
+
+message DelTentacleReq {
+  uint32 id = 1;
+  TentacleList list = 2;
+}
+
+message DelTentacleResp {
+  bool exists = 1;
 }
