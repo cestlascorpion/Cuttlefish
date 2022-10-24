@@ -25,7 +25,9 @@ type CuttlefishClient interface {
 	GetTentacle(ctx context.Context, in *GetTentacleReq, opts ...grpc.CallOption) (*GetTentacleResp, error)
 	BatchGetTentacle(ctx context.Context, in *BatchGetTentacleReq, opts ...grpc.CallOption) (*BatchGetTentacleResp, error)
 	SetTentacle(ctx context.Context, in *SetTentacleReq, opts ...grpc.CallOption) (*SetTentacleResp, error)
+	BatchSetTentacle(ctx context.Context, in *BatchSetTentacleReq, opts ...grpc.CallOption) (*BatchSetTentacleResp, error)
 	DelTentacle(ctx context.Context, in *DelTentacleReq, opts ...grpc.CallOption) (*DelTentacleResp, error)
+	BatchDelTentacle(ctx context.Context, in *BatchDelTentacleReq, opts ...grpc.CallOption) (*BatchDelTentacleResp, error)
 }
 
 type cuttlefishClient struct {
@@ -63,9 +65,27 @@ func (c *cuttlefishClient) SetTentacle(ctx context.Context, in *SetTentacleReq, 
 	return out, nil
 }
 
+func (c *cuttlefishClient) BatchSetTentacle(ctx context.Context, in *BatchSetTentacleReq, opts ...grpc.CallOption) (*BatchSetTentacleResp, error) {
+	out := new(BatchSetTentacleResp)
+	err := c.cc.Invoke(ctx, "/Cuttlefish.cuttlefish/BatchSetTentacle", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *cuttlefishClient) DelTentacle(ctx context.Context, in *DelTentacleReq, opts ...grpc.CallOption) (*DelTentacleResp, error) {
 	out := new(DelTentacleResp)
 	err := c.cc.Invoke(ctx, "/Cuttlefish.cuttlefish/DelTentacle", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cuttlefishClient) BatchDelTentacle(ctx context.Context, in *BatchDelTentacleReq, opts ...grpc.CallOption) (*BatchDelTentacleResp, error) {
+	out := new(BatchDelTentacleResp)
+	err := c.cc.Invoke(ctx, "/Cuttlefish.cuttlefish/BatchDelTentacle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +99,9 @@ type CuttlefishServer interface {
 	GetTentacle(context.Context, *GetTentacleReq) (*GetTentacleResp, error)
 	BatchGetTentacle(context.Context, *BatchGetTentacleReq) (*BatchGetTentacleResp, error)
 	SetTentacle(context.Context, *SetTentacleReq) (*SetTentacleResp, error)
+	BatchSetTentacle(context.Context, *BatchSetTentacleReq) (*BatchSetTentacleResp, error)
 	DelTentacle(context.Context, *DelTentacleReq) (*DelTentacleResp, error)
+	BatchDelTentacle(context.Context, *BatchDelTentacleReq) (*BatchDelTentacleResp, error)
 	mustEmbedUnimplementedCuttlefishServer()
 }
 
@@ -96,8 +118,14 @@ func (UnimplementedCuttlefishServer) BatchGetTentacle(context.Context, *BatchGet
 func (UnimplementedCuttlefishServer) SetTentacle(context.Context, *SetTentacleReq) (*SetTentacleResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetTentacle not implemented")
 }
+func (UnimplementedCuttlefishServer) BatchSetTentacle(context.Context, *BatchSetTentacleReq) (*BatchSetTentacleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchSetTentacle not implemented")
+}
 func (UnimplementedCuttlefishServer) DelTentacle(context.Context, *DelTentacleReq) (*DelTentacleResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DelTentacle not implemented")
+}
+func (UnimplementedCuttlefishServer) BatchDelTentacle(context.Context, *BatchDelTentacleReq) (*BatchDelTentacleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchDelTentacle not implemented")
 }
 func (UnimplementedCuttlefishServer) mustEmbedUnimplementedCuttlefishServer() {}
 
@@ -166,6 +194,24 @@ func _Cuttlefish_SetTentacle_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Cuttlefish_BatchSetTentacle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchSetTentacleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CuttlefishServer).BatchSetTentacle(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Cuttlefish.cuttlefish/BatchSetTentacle",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CuttlefishServer).BatchSetTentacle(ctx, req.(*BatchSetTentacleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Cuttlefish_DelTentacle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DelTentacleReq)
 	if err := dec(in); err != nil {
@@ -180,6 +226,24 @@ func _Cuttlefish_DelTentacle_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CuttlefishServer).DelTentacle(ctx, req.(*DelTentacleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cuttlefish_BatchDelTentacle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchDelTentacleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CuttlefishServer).BatchDelTentacle(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Cuttlefish.cuttlefish/BatchDelTentacle",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CuttlefishServer).BatchDelTentacle(ctx, req.(*BatchDelTentacleReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -204,8 +268,16 @@ var Cuttlefish_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Cuttlefish_SetTentacle_Handler,
 		},
 		{
+			MethodName: "BatchSetTentacle",
+			Handler:    _Cuttlefish_BatchSetTentacle_Handler,
+		},
+		{
 			MethodName: "DelTentacle",
 			Handler:    _Cuttlefish_DelTentacle_Handler,
+		},
+		{
+			MethodName: "BatchDelTentacle",
+			Handler:    _Cuttlefish_BatchDelTentacle_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
