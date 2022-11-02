@@ -4,194 +4,220 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
+	pb "github.com/cestlascorpion/cuttlefish/proto"
 	"github.com/cestlascorpion/cuttlefish/utils"
 	log "github.com/sirupsen/logrus"
 )
 
+var dao *Redis
+
 func init() {
 	log.SetLevel(log.DebugLevel)
+
+	conf := utils.NewTestConfig()
+	redis, err := NewRedis(context.Background(), conf)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	dao = redis
 }
 
 func TestRedis_SetTentacle(t *testing.T) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
 	}
-	defer redis.Close(context.Background())
 
-	err = redis.SetTentacle(context.Background(), 1234, "rock", "online")
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
-	}
-}
-
-func TestRedis_SetlMultiTentacle(t *testing.T) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
-	}
-	defer redis.Close(context.Background())
-
-	err = redis.SetMultiTentacle(context.Background(), 1234, map[string]interface{}{
-		"r": "online",
-		"o": "online",
-		"c": "online",
-		"k": "online",
+	exists, err := dao.SetTentacle(context.Background(), 1234, []*pb.Tentacle{
+		{Key: "key", Val: "value"},
 	})
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	fmt.Println(exists)
 }
 
 func TestRedis_GetTentacle(t *testing.T) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
 	}
-	defer redis.Close(context.Background())
 
-	res, err := redis.GetTentacle(context.Background(), 1234)
+	result, err := dao.GetTentacle(context.Background(), 1234)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	fmt.Println(res)
-}
-
-func TestRedis_BatchGetTentacle(t *testing.T) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
-	}
-	defer redis.Close(context.Background())
-
-	resList, err := redis.BatchGetTentacle(context.Background(), []uint32{1234})
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
-	}
-	fmt.Println(resList)
+	fmt.Println(result)
 }
 
 func TestRedis_DelTentacle(t *testing.T) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
 	}
-	defer redis.Close(context.Background())
 
-	exist, err := redis.DelTentacle(context.Background(), 1234, "rock")
+	exists, err := dao.DelTentacle(context.Background(), 1234, []*pb.Tentacle{
+		{Key: "key"},
+	})
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	fmt.Println(exist)
+	fmt.Println(exists)
+}
+
+func TestRedis_SetTentacle2(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	exists, err := dao.SetTentacle(context.Background(), 1234, []*pb.Tentacle{
+		{Key: "k1", Val: "v1"},
+		{Key: "k2", Val: "v2"},
+	})
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(exists)
+}
+
+func TestRedis_GetTentacle2(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	result, err := dao.GetTentacle(context.Background(), 1234)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(result)
 }
 
 func TestRedis_DelTentacle2(t *testing.T) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	exists, err := dao.DelTentacle(context.Background(), 1234, []*pb.Tentacle{
+		{Key: "k1"},
+		{Key: "k2"},
+	})
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	defer redis.Close(context.Background())
+	fmt.Println(exists)
+}
 
-	exist, err := redis.DelTentacle(context.Background(), 1234, "r", "o", "c", "k")
+func TestRedis_BatchSetTentacle(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	parameter := make(map[uint32]*pb.TentacleInfo)
+	for i := uint32(0); i < 5; i++ {
+		parameter[i] = &pb.TentacleInfo{
+			TentacleList: []*pb.Tentacle{
+				{Key: "k", Val: "k"},
+				{Key: "e", Val: "e"},
+				{Key: "y", Val: "y"},
+			},
+		}
+	}
+	existsMap, err := dao.BatchSetTentacle(context.Background(), parameter)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	fmt.Println(exist)
+	fmt.Println(existsMap)
 }
 
-func BenchmarkRedis_SetTentacle(b *testing.B) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
+func TestRedis_BatchGetTentacle(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	idList := make([]uint32, 0)
+	for i := uint32(0); i < 5; i++ {
+		idList = append(idList, i)
+	}
+	resultMap, err := dao.BatchGetTentacle(context.Background(), idList)
 	if err != nil {
 		fmt.Println(err)
-		b.FailNow()
+		t.FailNow()
 	}
-	defer redis.Close(context.Background())
-	log.SetLevel(log.InfoLevel)
-
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		err := redis.SetTentacle(context.Background(), 1234, "rock", "online")
-		if err != nil {
-			fmt.Println(err)
-			b.FailNow()
-		}
-	}
-
+	fmt.Println(resultMap)
 }
 
-func BenchmarkRedis_GetTentacle(b *testing.B) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
-	if err != nil {
-		fmt.Println(err)
-		b.FailNow()
-	}
-	defer redis.Close(context.Background())
-	log.SetLevel(log.InfoLevel)
-
-	err = redis.SetTentacle(context.Background(), 1234, "rock", "online")
-	if err != nil {
-		fmt.Println(err)
-		b.FailNow()
+func TestRedis_BatchDelTentacle(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
 	}
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_, err := redis.GetTentacle(context.Background(), 1234)
-		if err != nil {
-			fmt.Println(err)
-			b.FailNow()
+	parameter := make(map[uint32]*pb.TentacleInfo)
+	for i := uint32(0); i < 5; i++ {
+		parameter[i] = &pb.TentacleInfo{
+			TentacleList: []*pb.Tentacle{
+				{Key: "k"},
+				{Key: "e"},
+				{Key: "y"},
+			},
 		}
+	}
+	existsMap, err := dao.BatchDelTentacle(context.Background(), parameter)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(existsMap)
+}
+
+func TestRedis_SetTentacleHistory(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	ts := time.Now().AddDate(0, 0, -1)
+	err := dao.SetTentacleHistory(context.Background(), 1234, "online @"+ts.String(), ts)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+
+	time.Sleep(time.Second)
+
+	ts = time.Now().AddDate(0, 0, -1)
+	err = dao.SetTentacleHistory(context.Background(), 1234, "offline @"+ts.String(), ts)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
 	}
 }
 
-func BenchmarkRedis_BatchGetTentacle(b *testing.B) {
-	conf := utils.NewTestConfig()
-	redis, err := NewRedis(context.Background(), conf)
+func TestRedis_GetTentacleHistory(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	result, err := dao.GetTentacleHistory(context.Background(), 1234, time.Now().AddDate(0, 0, -2), time.Now())
 	if err != nil {
 		fmt.Println(err)
-		b.FailNow()
+		t.FailNow()
 	}
-	defer redis.Close(context.Background())
-	log.SetLevel(log.InfoLevel)
-
-	batchSize := 5120
-	idList := make([]uint32, 0, batchSize)
-	for i := 0; i < batchSize; i++ {
-		idList = append(idList, uint32(i))
-		err := redis.SetTentacle(context.Background(), uint32(i), "rock", "online")
-		if err != nil {
-			fmt.Println(err)
-			b.FailNow()
-		}
-	}
-
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		_, err := redis.BatchGetTentacle(context.Background(), idList)
-		if err != nil {
-			fmt.Println(err)
-			b.FailNow()
-		}
-	}
+	fmt.Println(result)
 }

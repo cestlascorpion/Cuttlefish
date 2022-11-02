@@ -11,15 +11,25 @@ service cuttlefish {
   rpc BatchSetTentacle(BatchSetTentacleReq) returns (BatchSetTentacleResp) {}
   rpc DelTentacle(DelTentacleReq) returns (DelTentacleResp) {}
   rpc BatchDelTentacle(BatchDelTentacleReq) returns (BatchDelTentacleResp) {}
+  rpc GetTentacleHistory(GetTentacleHistoryReq) returns (GetTentacleHistoryResp) {}
+}
+
+message EgK {
+  string proxy = 1;
+  string seqId = 2;
+}
+
+message EgV {
+  int64 ts = 1;
+  string desc = 2;
 }
 
 message Tentacle {
-  uint32 uid = 1;
-  string key = 2;
-  map<string, string> val = 3;
+  string key = 1; // eg: serialized EgK
+  string val = 2; // eg: serialized EgV
 }
 
-message TentacleList {
+message TentacleInfo {
   repeated Tentacle tentacle_list = 1;
 }
 
@@ -28,7 +38,7 @@ message GetTentacleReq {
 }
 
 message GetTentacleResp {
-  repeated Tentacle info = 1;
+  repeated Tentacle tentacle_list = 1;
 }
 
 message BatchGetTentacleReq {
@@ -36,11 +46,12 @@ message BatchGetTentacleReq {
 }
 
 message BatchGetTentacleResp {
-  map<uint32, TentacleList> info_list = 1;
+  map<uint32, TentacleInfo> info_list = 1;
 }
 
 message SetTentacleReq {
-  Tentacle info = 1;
+  uint32 id = 1;
+  repeated Tentacle tentacle_list = 2;
 }
 
 message SetTentacleResp {
@@ -48,7 +59,7 @@ message SetTentacleResp {
 }
 
 message BatchSetTentacleReq {
-  map<uint32, TentacleList> info_list = 1;
+  map<uint32, TentacleInfo> info_list = 1;
 }
 
 message BatchSetTentacleResp {
@@ -56,7 +67,8 @@ message BatchSetTentacleResp {
 }
 
 message DelTentacleReq {
-  Tentacle info = 1;
+  uint32 id = 1;
+  repeated Tentacle tentacle_list = 2;
 }
 
 message DelTentacleResp {
@@ -64,9 +76,24 @@ message DelTentacleResp {
 }
 
 message BatchDelTentacleReq {
-  map<uint32, TentacleList> info_list = 1;
+  map<uint32, TentacleInfo> info_list = 1;
 }
 
 message BatchDelTentacleResp {
   map<uint32, bool> result = 1;
+}
+
+message HistoryInfo {
+  bool st = 1; // online - true; offline - false
+  int64 ts = 2;
+}
+
+message GetTentacleHistoryReq {
+  uint32 id = 1;
+  int64 from = 2;
+  int64 to = 3;
+}
+
+message GetTentacleHistoryResp {
+  repeated HistoryInfo info_list = 1;
 }

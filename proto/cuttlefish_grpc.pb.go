@@ -28,6 +28,7 @@ type CuttlefishClient interface {
 	BatchSetTentacle(ctx context.Context, in *BatchSetTentacleReq, opts ...grpc.CallOption) (*BatchSetTentacleResp, error)
 	DelTentacle(ctx context.Context, in *DelTentacleReq, opts ...grpc.CallOption) (*DelTentacleResp, error)
 	BatchDelTentacle(ctx context.Context, in *BatchDelTentacleReq, opts ...grpc.CallOption) (*BatchDelTentacleResp, error)
+	GetTentacleHistory(ctx context.Context, in *GetTentacleHistoryReq, opts ...grpc.CallOption) (*GetTentacleHistoryResp, error)
 }
 
 type cuttlefishClient struct {
@@ -92,6 +93,15 @@ func (c *cuttlefishClient) BatchDelTentacle(ctx context.Context, in *BatchDelTen
 	return out, nil
 }
 
+func (c *cuttlefishClient) GetTentacleHistory(ctx context.Context, in *GetTentacleHistoryReq, opts ...grpc.CallOption) (*GetTentacleHistoryResp, error) {
+	out := new(GetTentacleHistoryResp)
+	err := c.cc.Invoke(ctx, "/Cuttlefish.cuttlefish/GetTentacleHistory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CuttlefishServer is the server API for Cuttlefish service.
 // All implementations must embed UnimplementedCuttlefishServer
 // for forward compatibility
@@ -102,6 +112,7 @@ type CuttlefishServer interface {
 	BatchSetTentacle(context.Context, *BatchSetTentacleReq) (*BatchSetTentacleResp, error)
 	DelTentacle(context.Context, *DelTentacleReq) (*DelTentacleResp, error)
 	BatchDelTentacle(context.Context, *BatchDelTentacleReq) (*BatchDelTentacleResp, error)
+	GetTentacleHistory(context.Context, *GetTentacleHistoryReq) (*GetTentacleHistoryResp, error)
 	mustEmbedUnimplementedCuttlefishServer()
 }
 
@@ -126,6 +137,9 @@ func (UnimplementedCuttlefishServer) DelTentacle(context.Context, *DelTentacleRe
 }
 func (UnimplementedCuttlefishServer) BatchDelTentacle(context.Context, *BatchDelTentacleReq) (*BatchDelTentacleResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDelTentacle not implemented")
+}
+func (UnimplementedCuttlefishServer) GetTentacleHistory(context.Context, *GetTentacleHistoryReq) (*GetTentacleHistoryResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTentacleHistory not implemented")
 }
 func (UnimplementedCuttlefishServer) mustEmbedUnimplementedCuttlefishServer() {}
 
@@ -248,6 +262,24 @@ func _Cuttlefish_BatchDelTentacle_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Cuttlefish_GetTentacleHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTentacleHistoryReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CuttlefishServer).GetTentacleHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Cuttlefish.cuttlefish/GetTentacleHistory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CuttlefishServer).GetTentacleHistory(ctx, req.(*GetTentacleHistoryReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Cuttlefish_ServiceDesc is the grpc.ServiceDesc for Cuttlefish service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +310,10 @@ var Cuttlefish_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BatchDelTentacle",
 			Handler:    _Cuttlefish_BatchDelTentacle_Handler,
+		},
+		{
+			MethodName: "GetTentacleHistory",
+			Handler:    _Cuttlefish_GetTentacleHistory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

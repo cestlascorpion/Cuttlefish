@@ -11,5 +11,5 @@ var (
 
 const (
 	defaultPrefix = "online"
-	defaultExpire = time.Minute * 3
+	defaultExpire = time.Minute * 5
 )

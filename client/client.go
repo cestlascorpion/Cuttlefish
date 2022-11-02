@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"time"
 
 	pb "github.com/cestlascorpion/cuttlefish/proto"
 	log "github.com/sirupsen/logrus"
@@ -32,10 +33,10 @@ func (c *Client) GetTentacle(ctx context.Context, uid uint32) ([]*pb.Tentacle, e
 	if err != nil {
 		return nil, err
 	}
-	return resp.Info, nil
+	return resp.TentacleList, nil
 }
 
-func (c *Client) BatchGetTentacle(ctx context.Context, uidList []uint32) (map[uint32]*pb.TentacleList, error) {
+func (c *Client) BatchGetTentacle(ctx context.Context, uidList []uint32) (map[uint32]*pb.TentacleInfo, error) {
 	resp, err := c.CuttlefishClient.BatchGetTentacle(ctx, &pb.BatchGetTentacleReq{
 		UidList: uidList,
 	})
@@ -45,12 +46,14 @@ func (c *Client) BatchGetTentacle(ctx context.Context, uidList []uint32) (map[ui
 	return resp.InfoList, nil
 }
 
-func (c *Client) SetTentacle(ctx context.Context, uid uint32, key string, val map[string]string) (bool, error) {
+func (c *Client) SetTentacle(ctx context.Context, uid uint32, key string, val string) (bool, error) {
 	resp, err := c.CuttlefishClient.SetTentacle(ctx, &pb.SetTentacleReq{
-		Info: &pb.Tentacle{
-			Uid: uid,
-			Key: key,
-			Val: val,
+		Id: uid,
+		TentacleList: []*pb.Tentacle{
+			{
+				Key: key,
+				Val: val,
+			},
 		},
 	})
 	if err != nil {
@@ -59,16 +62,34 @@ func (c *Client) SetTentacle(ctx context.Context, uid uint32, key string, val ma
 	return resp.Online, nil
 }
 
-func (c *Client) BatchSetTentacle(ctx context.Context) (map[uint32]bool, error) {
-	// TODO:
-	return nil, nil
+func (c *Client) SetMultiTentacle(ctx context.Context, uid uint32, infoList []*pb.Tentacle) (bool, error) {
+	resp, err := c.CuttlefishClient.SetTentacle(ctx, &pb.SetTentacleReq{
+		Id:           uid,
+		TentacleList: infoList,
+	})
+	if err != nil {
+		return false, err
+	}
+	return resp.Online, nil
+}
+
+func (c *Client) BatchSetTentacle(ctx context.Context, infoList map[uint32]*pb.TentacleInfo) (map[uint32]bool, error) {
+	resp, err := c.CuttlefishClient.BatchSetTentacle(ctx, &pb.BatchSetTentacleReq{
+		InfoList: infoList,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return resp.Result, nil
 }
 
 func (c *Client) DelTentacle(ctx context.Context, uid uint32, key string) (bool, error) {
 	resp, err := c.CuttlefishClient.DelTentacle(ctx, &pb.DelTentacleReq{
-		Info: &pb.Tentacle{
-			Uid: uid,
-			Key: key,
+		Id: uid,
+		TentacleList: []*pb.Tentacle{
+			{
+				Key: key,
+			},
 		},
 	})
 	if err != nil {
@@ -77,9 +98,37 @@ func (c *Client) DelTentacle(ctx context.Context, uid uint32, key string) (bool,
 	return resp.Offline, nil
 }
 
-func (c *Client) BatchDelTentacle(ctx context.Context) (map[uint32]string, error) {
-	// TODO:
-	return nil, nil
+func (c *Client) DelMultiTentacle(ctx context.Context, uid uint32, infoList []*pb.Tentacle) (bool, error) {
+	resp, err := c.CuttlefishClient.DelTentacle(ctx, &pb.DelTentacleReq{
+		Id:           uid,
+		TentacleList: infoList,
+	})
+	if err != nil {
+		return false, err
+	}
+	return resp.Offline, nil
+}
+
+func (c *Client) BatchDelTentacle(ctx context.Context, infoList map[uint32]*pb.TentacleInfo) (map[uint32]bool, error) {
+	resp, err := c.CuttlefishClient.BatchDelTentacle(ctx, &pb.BatchDelTentacleReq{
+		InfoList: infoList,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return resp.Result, nil
+}
+
+func (c *Client) GetTentacleHistory(ctx context.Context, id uint32, from, to time.Time) ([]*pb.HistoryInfo, error) {
+	resp, err := c.CuttlefishClient.GetTentacleHistory(ctx, &pb.GetTentacleHistoryReq{
+		Id:   id,
+		From: from.UnixMilli(),
+		To:   to.UnixMilli(),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return resp.InfoList, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
