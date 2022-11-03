@@ -63,6 +63,22 @@ func TestClient_SetTentacle(t *testing.T) {
 	fmt.Println(online)
 }
 
+func TestClient_PeekTentacle(t *testing.T) {
+	client, err := NewClient(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	defer client.Close(context.Background())
+
+	exists, err := client.PeekTentacle(context.Background(), 1234)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(exists)
+}
+
 func TestClient_GetTentacle(t *testing.T) {
 	client, err := NewClient(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -213,6 +229,22 @@ func TestClient_BatchSetTentacle(t *testing.T) {
 	for k, v := range result {
 		fmt.Println(k, v)
 	}
+}
+
+func TestClient_BatchPeekTentacle(t *testing.T) {
+	client, err := NewClient(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	defer client.Close(context.Background())
+
+	result, err := client.BatchPeekTentacle(context.Background(), []uint32{0, 1, 2, 3, 4})
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(result)
 }
 
 func TestClient_BatchGetTentacle(t *testing.T) {

@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type CuttlefishClient interface {
 	GetTentacle(ctx context.Context, in *GetTentacleReq, opts ...grpc.CallOption) (*GetTentacleResp, error)
 	BatchGetTentacle(ctx context.Context, in *BatchGetTentacleReq, opts ...grpc.CallOption) (*BatchGetTentacleResp, error)
+	PeekTentacle(ctx context.Context, in *PeekTentacleReq, opts ...grpc.CallOption) (*PeekTentacleResp, error)
+	BatchPeekTentacle(ctx context.Context, in *BatchPeekTentacleReq, opts ...grpc.CallOption) (*BatchPeekTentacleResp, error)
 	SetTentacle(ctx context.Context, in *SetTentacleReq, opts ...grpc.CallOption) (*SetTentacleResp, error)
 	BatchSetTentacle(ctx context.Context, in *BatchSetTentacleReq, opts ...grpc.CallOption) (*BatchSetTentacleResp, error)
 	DelTentacle(ctx context.Context, in *DelTentacleReq, opts ...grpc.CallOption) (*DelTentacleResp, error)
@@ -51,6 +53,24 @@ func (c *cuttlefishClient) GetTentacle(ctx context.Context, in *GetTentacleReq, 
 func (c *cuttlefishClient) BatchGetTentacle(ctx context.Context, in *BatchGetTentacleReq, opts ...grpc.CallOption) (*BatchGetTentacleResp, error) {
 	out := new(BatchGetTentacleResp)
 	err := c.cc.Invoke(ctx, "/Cuttlefish.cuttlefish/BatchGetTentacle", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cuttlefishClient) PeekTentacle(ctx context.Context, in *PeekTentacleReq, opts ...grpc.CallOption) (*PeekTentacleResp, error) {
+	out := new(PeekTentacleResp)
+	err := c.cc.Invoke(ctx, "/Cuttlefish.cuttlefish/PeekTentacle", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cuttlefishClient) BatchPeekTentacle(ctx context.Context, in *BatchPeekTentacleReq, opts ...grpc.CallOption) (*BatchPeekTentacleResp, error) {
+	out := new(BatchPeekTentacleResp)
+	err := c.cc.Invoke(ctx, "/Cuttlefish.cuttlefish/BatchPeekTentacle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,6 +128,8 @@ func (c *cuttlefishClient) GetTentacleHistory(ctx context.Context, in *GetTentac
 type CuttlefishServer interface {
 	GetTentacle(context.Context, *GetTentacleReq) (*GetTentacleResp, error)
 	BatchGetTentacle(context.Context, *BatchGetTentacleReq) (*BatchGetTentacleResp, error)
+	PeekTentacle(context.Context, *PeekTentacleReq) (*PeekTentacleResp, error)
+	BatchPeekTentacle(context.Context, *BatchPeekTentacleReq) (*BatchPeekTentacleResp, error)
 	SetTentacle(context.Context, *SetTentacleReq) (*SetTentacleResp, error)
 	BatchSetTentacle(context.Context, *BatchSetTentacleReq) (*BatchSetTentacleResp, error)
 	DelTentacle(context.Context, *DelTentacleReq) (*DelTentacleResp, error)
@@ -125,6 +147,12 @@ func (UnimplementedCuttlefishServer) GetTentacle(context.Context, *GetTentacleRe
 }
 func (UnimplementedCuttlefishServer) BatchGetTentacle(context.Context, *BatchGetTentacleReq) (*BatchGetTentacleResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchGetTentacle not implemented")
+}
+func (UnimplementedCuttlefishServer) PeekTentacle(context.Context, *PeekTentacleReq) (*PeekTentacleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PeekTentacle not implemented")
+}
+func (UnimplementedCuttlefishServer) BatchPeekTentacle(context.Context, *BatchPeekTentacleReq) (*BatchPeekTentacleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchPeekTentacle not implemented")
 }
 func (UnimplementedCuttlefishServer) SetTentacle(context.Context, *SetTentacleReq) (*SetTentacleResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetTentacle not implemented")
@@ -186,6 +214,42 @@ func _Cuttlefish_BatchGetTentacle_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CuttlefishServer).BatchGetTentacle(ctx, req.(*BatchGetTentacleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cuttlefish_PeekTentacle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PeekTentacleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CuttlefishServer).PeekTentacle(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Cuttlefish.cuttlefish/PeekTentacle",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CuttlefishServer).PeekTentacle(ctx, req.(*PeekTentacleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cuttlefish_BatchPeekTentacle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchPeekTentacleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CuttlefishServer).BatchPeekTentacle(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Cuttlefish.cuttlefish/BatchPeekTentacle",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CuttlefishServer).BatchPeekTentacle(ctx, req.(*BatchPeekTentacleReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -294,6 +358,14 @@ var Cuttlefish_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BatchGetTentacle",
 			Handler:    _Cuttlefish_BatchGetTentacle_Handler,
+		},
+		{
+			MethodName: "PeekTentacle",
+			Handler:    _Cuttlefish_PeekTentacle_Handler,
+		},
+		{
+			MethodName: "BatchPeekTentacle",
+			Handler:    _Cuttlefish_BatchPeekTentacle_Handler,
 		},
 		{
 			MethodName: "SetTentacle",

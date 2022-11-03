@@ -7,10 +7,16 @@ option go_package = "github.com/cestlascorpion/Cuttlefish;cuttlefish";
 service cuttlefish {
   rpc GetTentacle(GetTentacleReq) returns (GetTentacleResp) {}
   rpc BatchGetTentacle(BatchGetTentacleReq) returns (BatchGetTentacleResp) {}
+
+  rpc PeekTentacle(PeekTentacleReq) returns (PeekTentacleResp) {}
+  rpc BatchPeekTentacle(BatchPeekTentacleReq) returns (BatchPeekTentacleResp) {}
+
   rpc SetTentacle(SetTentacleReq) returns (SetTentacleResp) {}
   rpc BatchSetTentacle(BatchSetTentacleReq) returns (BatchSetTentacleResp) {}
+
   rpc DelTentacle(DelTentacleReq) returns (DelTentacleResp) {}
   rpc BatchDelTentacle(BatchDelTentacleReq) returns (BatchDelTentacleResp) {}
+
   rpc GetTentacleHistory(GetTentacleHistoryReq) returns (GetTentacleHistoryResp) {}
 }
 
@@ -47,6 +53,22 @@ message BatchGetTentacleReq {
 
 message BatchGetTentacleResp {
   map<uint32, TentacleInfo> info_list = 1;
+}
+
+message PeekTentacleReq {
+  uint32 uid = 1;
+}
+
+message PeekTentacleResp {
+  bool exists = 1;
+}
+
+message BatchPeekTentacleReq {
+  repeated uint32 uid_list = 1;
+}
+
+message BatchPeekTentacleResp {
+  map<uint32, bool> result = 1;
 }
 
 message SetTentacleReq {

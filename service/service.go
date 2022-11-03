@@ -114,6 +114,41 @@ func (s *Server) BatchGetTentacle(ctx context.Context, in *pb.BatchGetTentacleRe
 	return out, nil
 }
 
+func (s *Server) PeekTentacle(ctx context.Context, in *pb.PeekTentacleReq) (*pb.PeekTentacleResp, error) {
+	log.Debugf("PeekTentacle in %+v", in)
+
+	out := &pb.PeekTentacleResp{}
+	exists, err := s.dao.PeekTentacle(ctx, in.Uid)
+	if err != nil {
+		log.Errorf("PeekTentacle %d err %+v", in.Uid, err)
+		return out, err
+	}
+	out.Exists = exists
+	return out, nil
+}
+
+func (s *Server) BatchPeekTentacle(ctx context.Context, in *pb.BatchPeekTentacleReq) (*pb.BatchPeekTentacleResp, error) {
+	log.Debugf("BatchPeekTentacle in %+v", in)
+
+	out := &pb.BatchPeekTentacleResp{
+		Result: make(map[uint32]bool, len(in.UidList)),
+	}
+	if len(in.UidList) == 0 {
+		log.Errorf("BatchPeekTentacle empty uidList")
+		return out, utils.ErrInvalidParameter
+	}
+
+	result, err := s.dao.BatchPeekTentacle(ctx, in.UidList)
+	if err != nil {
+		log.Errorf("PeekTentacle %+v err %+v", in.UidList, err)
+		return out, err
+	}
+	for id, exists := range result {
+		out.Result[id] = exists
+	}
+	return out, nil
+}
+
 func (s *Server) SetTentacle(ctx context.Context, in *pb.SetTentacleReq) (*pb.SetTentacleResp, error) {
 	log.Debugf("SetTentacle in %+v", in)
 

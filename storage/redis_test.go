@@ -41,6 +41,20 @@ func TestRedis_SetTentacle(t *testing.T) {
 	fmt.Println(exists)
 }
 
+func TestRedis_PeekTentacle(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	exists, err := dao.PeekTentacle(context.Background(), 1234)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(exists)
+}
+
 func TestRedis_GetTentacle(t *testing.T) {
 	if dao == nil {
 		fmt.Println("init dao failed")
@@ -141,6 +155,20 @@ func TestRedis_BatchSetTentacle(t *testing.T) {
 		t.FailNow()
 	}
 	fmt.Println(existsMap)
+}
+
+func TestRedis_BatchPeekTentacle(t *testing.T) {
+	if dao == nil {
+		fmt.Println("init dao failed")
+		return
+	}
+
+	result, err := dao.BatchPeekTentacle(context.Background(), []uint32{0, 1, 2, 3, 4})
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(result)
 }
 
 func TestRedis_BatchGetTentacle(t *testing.T) {

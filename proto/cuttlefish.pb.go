@@ -420,6 +420,194 @@ func (x *BatchGetTentacleResp) GetInfoList() map[uint32]*TentacleInfo {
 	return nil
 }
 
+type PeekTentacleReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Uid uint32 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+}
+
+func (x *PeekTentacleReq) Reset() {
+	*x = PeekTentacleReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_cuttlefish_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PeekTentacleReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PeekTentacleReq) ProtoMessage() {}
+
+func (x *PeekTentacleReq) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_cuttlefish_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PeekTentacleReq.ProtoReflect.Descriptor instead.
+func (*PeekTentacleReq) Descriptor() ([]byte, []int) {
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *PeekTentacleReq) GetUid() uint32 {
+	if x != nil {
+		return x.Uid
+	}
+	return 0
+}
+
+type PeekTentacleResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Exists bool `protobuf:"varint,1,opt,name=exists,proto3" json:"exists,omitempty"`
+}
+
+func (x *PeekTentacleResp) Reset() {
+	*x = PeekTentacleResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_cuttlefish_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PeekTentacleResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PeekTentacleResp) ProtoMessage() {}
+
+func (x *PeekTentacleResp) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_cuttlefish_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PeekTentacleResp.ProtoReflect.Descriptor instead.
+func (*PeekTentacleResp) Descriptor() ([]byte, []int) {
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *PeekTentacleResp) GetExists() bool {
+	if x != nil {
+		return x.Exists
+	}
+	return false
+}
+
+type BatchPeekTentacleReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UidList []uint32 `protobuf:"varint,1,rep,packed,name=uid_list,json=uidList,proto3" json:"uid_list,omitempty"`
+}
+
+func (x *BatchPeekTentacleReq) Reset() {
+	*x = BatchPeekTentacleReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_cuttlefish_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BatchPeekTentacleReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchPeekTentacleReq) ProtoMessage() {}
+
+func (x *BatchPeekTentacleReq) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_cuttlefish_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchPeekTentacleReq.ProtoReflect.Descriptor instead.
+func (*BatchPeekTentacleReq) Descriptor() ([]byte, []int) {
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *BatchPeekTentacleReq) GetUidList() []uint32 {
+	if x != nil {
+		return x.UidList
+	}
+	return nil
+}
+
+type BatchPeekTentacleResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Result map[uint32]bool `protobuf:"bytes,1,rep,name=result,proto3" json:"result,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
+}
+
+func (x *BatchPeekTentacleResp) Reset() {
+	*x = BatchPeekTentacleResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_cuttlefish_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BatchPeekTentacleResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BatchPeekTentacleResp) ProtoMessage() {}
+
+func (x *BatchPeekTentacleResp) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_cuttlefish_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BatchPeekTentacleResp.ProtoReflect.Descriptor instead.
+func (*BatchPeekTentacleResp) Descriptor() ([]byte, []int) {
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *BatchPeekTentacleResp) GetResult() map[uint32]bool {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
 type SetTentacleReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -432,7 +620,7 @@ type SetTentacleReq struct {
 func (x *SetTentacleReq) Reset() {
 	*x = SetTentacleReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[8]
+		mi := &file_proto_cuttlefish_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -445,7 +633,7 @@ func (x *SetTentacleReq) String() string {
 func (*SetTentacleReq) ProtoMessage() {}
 
 func (x *SetTentacleReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[8]
+	mi := &file_proto_cuttlefish_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -458,7 +646,7 @@ func (x *SetTentacleReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetTentacleReq.ProtoReflect.Descriptor instead.
 func (*SetTentacleReq) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{8}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *SetTentacleReq) GetId() uint32 {
@@ -486,7 +674,7 @@ type SetTentacleResp struct {
 func (x *SetTentacleResp) Reset() {
 	*x = SetTentacleResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[9]
+		mi := &file_proto_cuttlefish_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -499,7 +687,7 @@ func (x *SetTentacleResp) String() string {
 func (*SetTentacleResp) ProtoMessage() {}
 
 func (x *SetTentacleResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[9]
+	mi := &file_proto_cuttlefish_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -512,7 +700,7 @@ func (x *SetTentacleResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetTentacleResp.ProtoReflect.Descriptor instead.
 func (*SetTentacleResp) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{9}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *SetTentacleResp) GetOnline() bool {
@@ -533,7 +721,7 @@ type BatchSetTentacleReq struct {
 func (x *BatchSetTentacleReq) Reset() {
 	*x = BatchSetTentacleReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[10]
+		mi := &file_proto_cuttlefish_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -546,7 +734,7 @@ func (x *BatchSetTentacleReq) String() string {
 func (*BatchSetTentacleReq) ProtoMessage() {}
 
 func (x *BatchSetTentacleReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[10]
+	mi := &file_proto_cuttlefish_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -559,7 +747,7 @@ func (x *BatchSetTentacleReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchSetTentacleReq.ProtoReflect.Descriptor instead.
 func (*BatchSetTentacleReq) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{10}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *BatchSetTentacleReq) GetInfoList() map[uint32]*TentacleInfo {
@@ -580,7 +768,7 @@ type BatchSetTentacleResp struct {
 func (x *BatchSetTentacleResp) Reset() {
 	*x = BatchSetTentacleResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[11]
+		mi := &file_proto_cuttlefish_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -593,7 +781,7 @@ func (x *BatchSetTentacleResp) String() string {
 func (*BatchSetTentacleResp) ProtoMessage() {}
 
 func (x *BatchSetTentacleResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[11]
+	mi := &file_proto_cuttlefish_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -606,7 +794,7 @@ func (x *BatchSetTentacleResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchSetTentacleResp.ProtoReflect.Descriptor instead.
 func (*BatchSetTentacleResp) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{11}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *BatchSetTentacleResp) GetResult() map[uint32]bool {
@@ -628,7 +816,7 @@ type DelTentacleReq struct {
 func (x *DelTentacleReq) Reset() {
 	*x = DelTentacleReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[12]
+		mi := &file_proto_cuttlefish_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -641,7 +829,7 @@ func (x *DelTentacleReq) String() string {
 func (*DelTentacleReq) ProtoMessage() {}
 
 func (x *DelTentacleReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[12]
+	mi := &file_proto_cuttlefish_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -654,7 +842,7 @@ func (x *DelTentacleReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DelTentacleReq.ProtoReflect.Descriptor instead.
 func (*DelTentacleReq) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{12}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DelTentacleReq) GetId() uint32 {
@@ -682,7 +870,7 @@ type DelTentacleResp struct {
 func (x *DelTentacleResp) Reset() {
 	*x = DelTentacleResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[13]
+		mi := &file_proto_cuttlefish_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -695,7 +883,7 @@ func (x *DelTentacleResp) String() string {
 func (*DelTentacleResp) ProtoMessage() {}
 
 func (x *DelTentacleResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[13]
+	mi := &file_proto_cuttlefish_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -708,7 +896,7 @@ func (x *DelTentacleResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DelTentacleResp.ProtoReflect.Descriptor instead.
 func (*DelTentacleResp) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{13}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *DelTentacleResp) GetOffline() bool {
@@ -729,7 +917,7 @@ type BatchDelTentacleReq struct {
 func (x *BatchDelTentacleReq) Reset() {
 	*x = BatchDelTentacleReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[14]
+		mi := &file_proto_cuttlefish_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -742,7 +930,7 @@ func (x *BatchDelTentacleReq) String() string {
 func (*BatchDelTentacleReq) ProtoMessage() {}
 
 func (x *BatchDelTentacleReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[14]
+	mi := &file_proto_cuttlefish_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -755,7 +943,7 @@ func (x *BatchDelTentacleReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchDelTentacleReq.ProtoReflect.Descriptor instead.
 func (*BatchDelTentacleReq) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{14}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *BatchDelTentacleReq) GetInfoList() map[uint32]*TentacleInfo {
@@ -776,7 +964,7 @@ type BatchDelTentacleResp struct {
 func (x *BatchDelTentacleResp) Reset() {
 	*x = BatchDelTentacleResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[15]
+		mi := &file_proto_cuttlefish_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -789,7 +977,7 @@ func (x *BatchDelTentacleResp) String() string {
 func (*BatchDelTentacleResp) ProtoMessage() {}
 
 func (x *BatchDelTentacleResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[15]
+	mi := &file_proto_cuttlefish_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -802,7 +990,7 @@ func (x *BatchDelTentacleResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchDelTentacleResp.ProtoReflect.Descriptor instead.
 func (*BatchDelTentacleResp) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{15}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *BatchDelTentacleResp) GetResult() map[uint32]bool {
@@ -824,7 +1012,7 @@ type HistoryInfo struct {
 func (x *HistoryInfo) Reset() {
 	*x = HistoryInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[16]
+		mi := &file_proto_cuttlefish_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -837,7 +1025,7 @@ func (x *HistoryInfo) String() string {
 func (*HistoryInfo) ProtoMessage() {}
 
 func (x *HistoryInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[16]
+	mi := &file_proto_cuttlefish_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -850,7 +1038,7 @@ func (x *HistoryInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HistoryInfo.ProtoReflect.Descriptor instead.
 func (*HistoryInfo) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{16}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *HistoryInfo) GetSt() bool {
@@ -880,7 +1068,7 @@ type GetTentacleHistoryReq struct {
 func (x *GetTentacleHistoryReq) Reset() {
 	*x = GetTentacleHistoryReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[17]
+		mi := &file_proto_cuttlefish_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -893,7 +1081,7 @@ func (x *GetTentacleHistoryReq) String() string {
 func (*GetTentacleHistoryReq) ProtoMessage() {}
 
 func (x *GetTentacleHistoryReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[17]
+	mi := &file_proto_cuttlefish_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -906,7 +1094,7 @@ func (x *GetTentacleHistoryReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTentacleHistoryReq.ProtoReflect.Descriptor instead.
 func (*GetTentacleHistoryReq) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{17}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetTentacleHistoryReq) GetId() uint32 {
@@ -941,7 +1129,7 @@ type GetTentacleHistoryResp struct {
 func (x *GetTentacleHistoryResp) Reset() {
 	*x = GetTentacleHistoryResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_cuttlefish_proto_msgTypes[18]
+		mi := &file_proto_cuttlefish_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -954,7 +1142,7 @@ func (x *GetTentacleHistoryResp) String() string {
 func (*GetTentacleHistoryResp) ProtoMessage() {}
 
 func (x *GetTentacleHistoryResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_cuttlefish_proto_msgTypes[18]
+	mi := &file_proto_cuttlefish_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -967,7 +1155,7 @@ func (x *GetTentacleHistoryResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTentacleHistoryResp.ProtoReflect.Descriptor instead.
 func (*GetTentacleHistoryResp) Descriptor() ([]byte, []int) {
-	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{18}
+	return file_proto_cuttlefish_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetTentacleHistoryResp) GetInfoList() []*HistoryInfo {
@@ -1017,7 +1205,25 @@ var file_proto_cuttlefish_proto_rawDesc = []byte{
 	0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x2e, 0x0a, 0x05, 0x76, 0x61,
 	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x43, 0x75, 0x74, 0x74,
 	0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x49,
-	0x6e, 0x66, 0x6f, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x5b,
+	0x6e, 0x66, 0x6f, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x23,
+	0x0a, 0x0f, 0x50, 0x65, 0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65,
+	0x71, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03,
+	0x75, 0x69, 0x64, 0x22, 0x2a, 0x0a, 0x10, 0x50, 0x65, 0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61,
+	0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x16, 0x0a, 0x06, 0x65, 0x78, 0x69, 0x73, 0x74,
+	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x65, 0x78, 0x69, 0x73, 0x74, 0x73, 0x22,
+	0x31, 0x0a, 0x14, 0x42, 0x61, 0x74, 0x63, 0x68, 0x50, 0x65, 0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74,
+	0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x12, 0x19, 0x0a, 0x08, 0x75, 0x69, 0x64, 0x5f, 0x6c,
+	0x69, 0x73, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0d, 0x52, 0x07, 0x75, 0x69, 0x64, 0x4c, 0x69,
+	0x73, 0x74, 0x22, 0x99, 0x01, 0x0a, 0x15, 0x42, 0x61, 0x74, 0x63, 0x68, 0x50, 0x65, 0x65, 0x6b,
+	0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x45, 0x0a, 0x06,
+	0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x43,
+	0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x50,
+	0x65, 0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x2e,
+	0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x06, 0x72, 0x65, 0x73,
+	0x75, 0x6c, 0x74, 0x1a, 0x39, 0x0a, 0x0b, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52,
+	0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x5b,
 	0x0a, 0x0e, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71,
 	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x02, 0x69, 0x64,
 	0x12, 0x39, 0x0a, 0x0d, 0x74, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x5f, 0x6c, 0x69, 0x73,
@@ -1090,7 +1296,7 @@ var file_proto_cuttlefish_proto_rawDesc = []byte{
 	0x12, 0x34, 0x0a, 0x09, 0x69, 0x6e, 0x66, 0x6f, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x01, 0x20,
 	0x03, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68,
 	0x2e, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x08, 0x69, 0x6e,
-	0x66, 0x6f, 0x4c, 0x69, 0x73, 0x74, 0x32, 0xd4, 0x04, 0x0a, 0x0a, 0x63, 0x75, 0x74, 0x74, 0x6c,
+	0x66, 0x6f, 0x4c, 0x69, 0x73, 0x74, 0x32, 0xfd, 0x05, 0x0a, 0x0a, 0x63, 0x75, 0x74, 0x74, 0x6c,
 	0x65, 0x66, 0x69, 0x73, 0x68, 0x12, 0x48, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74,
 	0x61, 0x63, 0x6c, 0x65, 0x12, 0x1a, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73,
 	0x68, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71,
@@ -1101,37 +1307,48 @@ var file_proto_cuttlefish_proto_rawDesc = []byte{
 	0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c,
 	0x65, 0x52, 0x65, 0x71, 0x1a, 0x20, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73,
 	0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63,
-	0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x0b, 0x53, 0x65, 0x74, 0x54,
-	0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x12, 0x1a, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65,
-	0x66, 0x69, 0x73, 0x68, 0x2e, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65,
-	0x52, 0x65, 0x71, 0x1a, 0x1b, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68,
-	0x2e, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70,
-	0x22, 0x00, 0x12, 0x57, 0x0a, 0x10, 0x42, 0x61, 0x74, 0x63, 0x68, 0x53, 0x65, 0x74, 0x54, 0x65,
-	0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x12, 0x1f, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66,
-	0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74,
-	0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x20, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65,
-	0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e,
-	0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x0b, 0x44,
-	0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x12, 0x1a, 0x2e, 0x43, 0x75, 0x74,
-	0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x44, 0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61,
-	0x63, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x1b, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66,
-	0x69, 0x73, 0x68, 0x2e, 0x44, 0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52,
-	0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x57, 0x0a, 0x10, 0x42, 0x61, 0x74, 0x63, 0x68, 0x44, 0x65,
-	0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x12, 0x1f, 0x2e, 0x43, 0x75, 0x74, 0x74,
-	0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x44, 0x65, 0x6c, 0x54,
-	0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x20, 0x2e, 0x43, 0x75, 0x74,
-	0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x44, 0x65, 0x6c,
-	0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x5d,
-	0x0a, 0x12, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x48, 0x69, 0x73,
-	0x74, 0x6f, 0x72, 0x79, 0x12, 0x21, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73,
-	0x68, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x48, 0x69, 0x73,
-	0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x71, 0x1a, 0x22, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65,
-	0x66, 0x69, 0x73, 0x68, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65,
-	0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x42, 0x31, 0x5a,
-	0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x65, 0x73, 0x74,
-	0x6c, 0x61, 0x73, 0x63, 0x6f, 0x72, 0x70, 0x69, 0x6f, 0x6e, 0x2f, 0x43, 0x75, 0x74, 0x74, 0x6c,
-	0x65, 0x66, 0x69, 0x73, 0x68, 0x3b, 0x63, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x4b, 0x0a, 0x0c, 0x50, 0x65, 0x65, 0x6b,
+	0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x12, 0x1b, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c,
+	0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x50, 0x65, 0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63,
+	0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x1c, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69,
+	0x73, 0x68, 0x2e, 0x50, 0x65, 0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52,
+	0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x5a, 0x0a, 0x11, 0x42, 0x61, 0x74, 0x63, 0x68, 0x50, 0x65,
+	0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x12, 0x20, 0x2e, 0x43, 0x75, 0x74,
+	0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x50, 0x65, 0x65,
+	0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x21, 0x2e, 0x43,
+	0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x50,
+	0x65, 0x65, 0x6b, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22,
+	0x00, 0x12, 0x48, 0x0a, 0x0b, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65,
+	0x12, 0x1a, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x53, 0x65,
+	0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x1b, 0x2e, 0x43,
+	0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e,
+	0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x57, 0x0a, 0x10, 0x42,
+	0x61, 0x74, 0x63, 0x68, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x12,
+	0x1f, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61, 0x74,
+	0x63, 0x68, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71,
+	0x1a, 0x20, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x42, 0x61,
+	0x74, 0x63, 0x68, 0x53, 0x65, 0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x0b, 0x44, 0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61,
+	0x63, 0x6c, 0x65, 0x12, 0x1a, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68,
+	0x2e, 0x44, 0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a,
+	0x1b, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x44, 0x65, 0x6c,
+	0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x57,
+	0x0a, 0x10, 0x42, 0x61, 0x74, 0x63, 0x68, 0x44, 0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63,
+	0x6c, 0x65, 0x12, 0x1f, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e,
+	0x42, 0x61, 0x74, 0x63, 0x68, 0x44, 0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65,
+	0x52, 0x65, 0x71, 0x1a, 0x20, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68,
+	0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x44, 0x65, 0x6c, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x5d, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x54, 0x65,
+	0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x12, 0x21, 0x2e,
+	0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x65,
+	0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x71,
+	0x1a, 0x22, 0x2e, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x2e, 0x47, 0x65,
+	0x74, 0x54, 0x65, 0x6e, 0x74, 0x61, 0x63, 0x6c, 0x65, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79,
+	0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x42, 0x31, 0x5a, 0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x65, 0x73, 0x74, 0x6c, 0x61, 0x73, 0x63, 0x6f, 0x72, 0x70,
+	0x69, 0x6f, 0x6e, 0x2f, 0x43, 0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x3b, 0x63,
+	0x75, 0x74, 0x74, 0x6c, 0x65, 0x66, 0x69, 0x73, 0x68, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -1146,7 +1363,7 @@ func file_proto_cuttlefish_proto_rawDescGZIP() []byte {
 	return file_proto_cuttlefish_proto_rawDescData
 }
 
-var file_proto_cuttlefish_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_proto_cuttlefish_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_proto_cuttlefish_proto_goTypes = []interface{}{
 	(*EgK)(nil),                    // 0: Cuttlefish.EgK
 	(*EgV)(nil),                    // 1: Cuttlefish.EgV
@@ -1156,56 +1373,66 @@ var file_proto_cuttlefish_proto_goTypes = []interface{}{
 	(*GetTentacleResp)(nil),        // 5: Cuttlefish.GetTentacleResp
 	(*BatchGetTentacleReq)(nil),    // 6: Cuttlefish.BatchGetTentacleReq
 	(*BatchGetTentacleResp)(nil),   // 7: Cuttlefish.BatchGetTentacleResp
-	(*SetTentacleReq)(nil),         // 8: Cuttlefish.SetTentacleReq
-	(*SetTentacleResp)(nil),        // 9: Cuttlefish.SetTentacleResp
-	(*BatchSetTentacleReq)(nil),    // 10: Cuttlefish.BatchSetTentacleReq
-	(*BatchSetTentacleResp)(nil),   // 11: Cuttlefish.BatchSetTentacleResp
-	(*DelTentacleReq)(nil),         // 12: Cuttlefish.DelTentacleReq
-	(*DelTentacleResp)(nil),        // 13: Cuttlefish.DelTentacleResp
-	(*BatchDelTentacleReq)(nil),    // 14: Cuttlefish.BatchDelTentacleReq
-	(*BatchDelTentacleResp)(nil),   // 15: Cuttlefish.BatchDelTentacleResp
-	(*HistoryInfo)(nil),            // 16: Cuttlefish.HistoryInfo
-	(*GetTentacleHistoryReq)(nil),  // 17: Cuttlefish.GetTentacleHistoryReq
-	(*GetTentacleHistoryResp)(nil), // 18: Cuttlefish.GetTentacleHistoryResp
-	nil,                            // 19: Cuttlefish.BatchGetTentacleResp.InfoListEntry
-	nil,                            // 20: Cuttlefish.BatchSetTentacleReq.InfoListEntry
-	nil,                            // 21: Cuttlefish.BatchSetTentacleResp.ResultEntry
-	nil,                            // 22: Cuttlefish.BatchDelTentacleReq.InfoListEntry
-	nil,                            // 23: Cuttlefish.BatchDelTentacleResp.ResultEntry
+	(*PeekTentacleReq)(nil),        // 8: Cuttlefish.PeekTentacleReq
+	(*PeekTentacleResp)(nil),       // 9: Cuttlefish.PeekTentacleResp
+	(*BatchPeekTentacleReq)(nil),   // 10: Cuttlefish.BatchPeekTentacleReq
+	(*BatchPeekTentacleResp)(nil),  // 11: Cuttlefish.BatchPeekTentacleResp
+	(*SetTentacleReq)(nil),         // 12: Cuttlefish.SetTentacleReq
+	(*SetTentacleResp)(nil),        // 13: Cuttlefish.SetTentacleResp
+	(*BatchSetTentacleReq)(nil),    // 14: Cuttlefish.BatchSetTentacleReq
+	(*BatchSetTentacleResp)(nil),   // 15: Cuttlefish.BatchSetTentacleResp
+	(*DelTentacleReq)(nil),         // 16: Cuttlefish.DelTentacleReq
+	(*DelTentacleResp)(nil),        // 17: Cuttlefish.DelTentacleResp
+	(*BatchDelTentacleReq)(nil),    // 18: Cuttlefish.BatchDelTentacleReq
+	(*BatchDelTentacleResp)(nil),   // 19: Cuttlefish.BatchDelTentacleResp
+	(*HistoryInfo)(nil),            // 20: Cuttlefish.HistoryInfo
+	(*GetTentacleHistoryReq)(nil),  // 21: Cuttlefish.GetTentacleHistoryReq
+	(*GetTentacleHistoryResp)(nil), // 22: Cuttlefish.GetTentacleHistoryResp
+	nil,                            // 23: Cuttlefish.BatchGetTentacleResp.InfoListEntry
+	nil,                            // 24: Cuttlefish.BatchPeekTentacleResp.ResultEntry
+	nil,                            // 25: Cuttlefish.BatchSetTentacleReq.InfoListEntry
+	nil,                            // 26: Cuttlefish.BatchSetTentacleResp.ResultEntry
+	nil,                            // 27: Cuttlefish.BatchDelTentacleReq.InfoListEntry
+	nil,                            // 28: Cuttlefish.BatchDelTentacleResp.ResultEntry
 }
 var file_proto_cuttlefish_proto_depIdxs = []int32{
 	2,  // 0: Cuttlefish.TentacleInfo.tentacle_list:type_name -> Cuttlefish.Tentacle
 	2,  // 1: Cuttlefish.GetTentacleResp.tentacle_list:type_name -> Cuttlefish.Tentacle
-	19, // 2: Cuttlefish.BatchGetTentacleResp.info_list:type_name -> Cuttlefish.BatchGetTentacleResp.InfoListEntry
-	2,  // 3: Cuttlefish.SetTentacleReq.tentacle_list:type_name -> Cuttlefish.Tentacle
-	20, // 4: Cuttlefish.BatchSetTentacleReq.info_list:type_name -> Cuttlefish.BatchSetTentacleReq.InfoListEntry
-	21, // 5: Cuttlefish.BatchSetTentacleResp.result:type_name -> Cuttlefish.BatchSetTentacleResp.ResultEntry
-	2,  // 6: Cuttlefish.DelTentacleReq.tentacle_list:type_name -> Cuttlefish.Tentacle
-	22, // 7: Cuttlefish.BatchDelTentacleReq.info_list:type_name -> Cuttlefish.BatchDelTentacleReq.InfoListEntry
-	23, // 8: Cuttlefish.BatchDelTentacleResp.result:type_name -> Cuttlefish.BatchDelTentacleResp.ResultEntry
-	16, // 9: Cuttlefish.GetTentacleHistoryResp.info_list:type_name -> Cuttlefish.HistoryInfo
-	3,  // 10: Cuttlefish.BatchGetTentacleResp.InfoListEntry.value:type_name -> Cuttlefish.TentacleInfo
-	3,  // 11: Cuttlefish.BatchSetTentacleReq.InfoListEntry.value:type_name -> Cuttlefish.TentacleInfo
-	3,  // 12: Cuttlefish.BatchDelTentacleReq.InfoListEntry.value:type_name -> Cuttlefish.TentacleInfo
-	4,  // 13: Cuttlefish.cuttlefish.GetTentacle:input_type -> Cuttlefish.GetTentacleReq
-	6,  // 14: Cuttlefish.cuttlefish.BatchGetTentacle:input_type -> Cuttlefish.BatchGetTentacleReq
-	8,  // 15: Cuttlefish.cuttlefish.SetTentacle:input_type -> Cuttlefish.SetTentacleReq
-	10, // 16: Cuttlefish.cuttlefish.BatchSetTentacle:input_type -> Cuttlefish.BatchSetTentacleReq
-	12, // 17: Cuttlefish.cuttlefish.DelTentacle:input_type -> Cuttlefish.DelTentacleReq
-	14, // 18: Cuttlefish.cuttlefish.BatchDelTentacle:input_type -> Cuttlefish.BatchDelTentacleReq
-	17, // 19: Cuttlefish.cuttlefish.GetTentacleHistory:input_type -> Cuttlefish.GetTentacleHistoryReq
-	5,  // 20: Cuttlefish.cuttlefish.GetTentacle:output_type -> Cuttlefish.GetTentacleResp
-	7,  // 21: Cuttlefish.cuttlefish.BatchGetTentacle:output_type -> Cuttlefish.BatchGetTentacleResp
-	9,  // 22: Cuttlefish.cuttlefish.SetTentacle:output_type -> Cuttlefish.SetTentacleResp
-	11, // 23: Cuttlefish.cuttlefish.BatchSetTentacle:output_type -> Cuttlefish.BatchSetTentacleResp
-	13, // 24: Cuttlefish.cuttlefish.DelTentacle:output_type -> Cuttlefish.DelTentacleResp
-	15, // 25: Cuttlefish.cuttlefish.BatchDelTentacle:output_type -> Cuttlefish.BatchDelTentacleResp
-	18, // 26: Cuttlefish.cuttlefish.GetTentacleHistory:output_type -> Cuttlefish.GetTentacleHistoryResp
-	20, // [20:27] is the sub-list for method output_type
-	13, // [13:20] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	23, // 2: Cuttlefish.BatchGetTentacleResp.info_list:type_name -> Cuttlefish.BatchGetTentacleResp.InfoListEntry
+	24, // 3: Cuttlefish.BatchPeekTentacleResp.result:type_name -> Cuttlefish.BatchPeekTentacleResp.ResultEntry
+	2,  // 4: Cuttlefish.SetTentacleReq.tentacle_list:type_name -> Cuttlefish.Tentacle
+	25, // 5: Cuttlefish.BatchSetTentacleReq.info_list:type_name -> Cuttlefish.BatchSetTentacleReq.InfoListEntry
+	26, // 6: Cuttlefish.BatchSetTentacleResp.result:type_name -> Cuttlefish.BatchSetTentacleResp.ResultEntry
+	2,  // 7: Cuttlefish.DelTentacleReq.tentacle_list:type_name -> Cuttlefish.Tentacle
+	27, // 8: Cuttlefish.BatchDelTentacleReq.info_list:type_name -> Cuttlefish.BatchDelTentacleReq.InfoListEntry
+	28, // 9: Cuttlefish.BatchDelTentacleResp.result:type_name -> Cuttlefish.BatchDelTentacleResp.ResultEntry
+	20, // 10: Cuttlefish.GetTentacleHistoryResp.info_list:type_name -> Cuttlefish.HistoryInfo
+	3,  // 11: Cuttlefish.BatchGetTentacleResp.InfoListEntry.value:type_name -> Cuttlefish.TentacleInfo
+	3,  // 12: Cuttlefish.BatchSetTentacleReq.InfoListEntry.value:type_name -> Cuttlefish.TentacleInfo
+	3,  // 13: Cuttlefish.BatchDelTentacleReq.InfoListEntry.value:type_name -> Cuttlefish.TentacleInfo
+	4,  // 14: Cuttlefish.cuttlefish.GetTentacle:input_type -> Cuttlefish.GetTentacleReq
+	6,  // 15: Cuttlefish.cuttlefish.BatchGetTentacle:input_type -> Cuttlefish.BatchGetTentacleReq
+	8,  // 16: Cuttlefish.cuttlefish.PeekTentacle:input_type -> Cuttlefish.PeekTentacleReq
+	10, // 17: Cuttlefish.cuttlefish.BatchPeekTentacle:input_type -> Cuttlefish.BatchPeekTentacleReq
+	12, // 18: Cuttlefish.cuttlefish.SetTentacle:input_type -> Cuttlefish.SetTentacleReq
+	14, // 19: Cuttlefish.cuttlefish.BatchSetTentacle:input_type -> Cuttlefish.BatchSetTentacleReq
+	16, // 20: Cuttlefish.cuttlefish.DelTentacle:input_type -> Cuttlefish.DelTentacleReq
+	18, // 21: Cuttlefish.cuttlefish.BatchDelTentacle:input_type -> Cuttlefish.BatchDelTentacleReq
+	21, // 22: Cuttlefish.cuttlefish.GetTentacleHistory:input_type -> Cuttlefish.GetTentacleHistoryReq
+	5,  // 23: Cuttlefish.cuttlefish.GetTentacle:output_type -> Cuttlefish.GetTentacleResp
+	7,  // 24: Cuttlefish.cuttlefish.BatchGetTentacle:output_type -> Cuttlefish.BatchGetTentacleResp
+	9,  // 25: Cuttlefish.cuttlefish.PeekTentacle:output_type -> Cuttlefish.PeekTentacleResp
+	11, // 26: Cuttlefish.cuttlefish.BatchPeekTentacle:output_type -> Cuttlefish.BatchPeekTentacleResp
+	13, // 27: Cuttlefish.cuttlefish.SetTentacle:output_type -> Cuttlefish.SetTentacleResp
+	15, // 28: Cuttlefish.cuttlefish.BatchSetTentacle:output_type -> Cuttlefish.BatchSetTentacleResp
+	17, // 29: Cuttlefish.cuttlefish.DelTentacle:output_type -> Cuttlefish.DelTentacleResp
+	19, // 30: Cuttlefish.cuttlefish.BatchDelTentacle:output_type -> Cuttlefish.BatchDelTentacleResp
+	22, // 31: Cuttlefish.cuttlefish.GetTentacleHistory:output_type -> Cuttlefish.GetTentacleHistoryResp
+	23, // [23:32] is the sub-list for method output_type
+	14, // [14:23] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_proto_cuttlefish_proto_init() }
@@ -1311,7 +1538,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SetTentacleReq); i {
+			switch v := v.(*PeekTentacleReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1323,7 +1550,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SetTentacleResp); i {
+			switch v := v.(*PeekTentacleResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1335,7 +1562,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BatchSetTentacleReq); i {
+			switch v := v.(*BatchPeekTentacleReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1347,7 +1574,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BatchSetTentacleResp); i {
+			switch v := v.(*BatchPeekTentacleResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1359,7 +1586,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DelTentacleReq); i {
+			switch v := v.(*SetTentacleReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1371,7 +1598,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DelTentacleResp); i {
+			switch v := v.(*SetTentacleResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1383,7 +1610,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BatchDelTentacleReq); i {
+			switch v := v.(*BatchSetTentacleReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1395,7 +1622,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BatchDelTentacleResp); i {
+			switch v := v.(*BatchSetTentacleResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1407,7 +1634,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HistoryInfo); i {
+			switch v := v.(*DelTentacleReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1419,7 +1646,7 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetTentacleHistoryReq); i {
+			switch v := v.(*DelTentacleResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1431,6 +1658,54 @@ func file_proto_cuttlefish_proto_init() {
 			}
 		}
 		file_proto_cuttlefish_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BatchDelTentacleReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_cuttlefish_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BatchDelTentacleResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_cuttlefish_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*HistoryInfo); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_cuttlefish_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetTentacleHistoryReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_cuttlefish_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetTentacleHistoryResp); i {
 			case 0:
 				return &v.state
@@ -1449,7 +1724,7 @@ func file_proto_cuttlefish_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_cuttlefish_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   24,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

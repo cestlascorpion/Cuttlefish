@@ -171,6 +171,46 @@ func (r *Redis) BatchGetTentacle(ctx context.Context, idList []uint32) (map[uint
 	return resultList, nil
 }
 
+func (r *Redis) PeekTentacle(ctx context.Context, id uint32) (bool, error) {
+	key := r.genUserKey(id)
+	exists, err := r.client.Exists(ctx, key).Result()
+	if err != nil {
+		log.Errorf("exists %s err %+v", key, err)
+		return false, err
+	}
+	return exists > 0, nil
+}
+
+func (r *Redis) BatchPeekTentacle(ctx context.Context, idList []uint32) (map[uint32]bool, error) {
+	resultList := make([]*redis.IntCmd, 0, len(idList))
+
+	pipe := r.client.Pipeline()
+	defer pipe.Close()
+
+	for i := range idList {
+		key := r.genUserKey(idList[i])
+		resultList = append(resultList, pipe.Exists(ctx, key))
+	}
+
+	_, err := pipe.Exec(ctx)
+	if err != nil {
+		log.Errorf("exec err %+v", err)
+		return nil, err
+	}
+
+	result := make(map[uint32]bool, len(resultList))
+	for i := range resultList {
+		exists, err := resultList[i].Result()
+		if err != nil {
+			log.Warnf("exists %s err %+v", r.genUserKey(idList[i]), err)
+			continue
+		}
+		result[idList[i]] = exists > 0
+	}
+
+	return result, nil
+}
+
 func (r *Redis) DelTentacle(ctx context.Context, id uint32, infoList []*pb.Tentacle) (bool, error) {
 	pipe := r.client.Pipeline()
 	defer pipe.Close()

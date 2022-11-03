@@ -46,6 +46,26 @@ func (c *Client) BatchGetTentacle(ctx context.Context, uidList []uint32) (map[ui
 	return resp.InfoList, nil
 }
 
+func (c *Client) PeekTentacle(ctx context.Context, uid uint32) (bool, error) {
+	resp, err := c.CuttlefishClient.PeekTentacle(ctx, &pb.PeekTentacleReq{
+		Uid: uid,
+	})
+	if err != nil {
+		return false, err
+	}
+	return resp.Exists, nil
+}
+
+func (c *Client) BatchPeekTentacle(ctx context.Context, uidList []uint32) (map[uint32]bool, error) {
+	resp, err := c.CuttlefishClient.BatchPeekTentacle(ctx, &pb.BatchPeekTentacleReq{
+		UidList: uidList,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return resp.Result, nil
+}
+
 func (c *Client) SetTentacle(ctx context.Context, uid uint32, key string, val string) (bool, error) {
 	resp, err := c.CuttlefishClient.SetTentacle(ctx, &pb.SetTentacleReq{
 		Id: uid,
