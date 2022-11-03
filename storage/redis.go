@@ -256,7 +256,7 @@ func (r *Redis) SetTentacleHistory(ctx context.Context, id uint32, record string
 	pipe := r.client.Pipeline()
 	defer pipe.Close()
 
-	key := r.genHistoryKey(id)
+	key := r.genHistKey(id)
 	z := &redis.Z{
 		Score:  float64(ts.UnixMilli()),
 		Member: record,
@@ -289,7 +289,7 @@ func (r *Redis) SetTentacleHistory(ctx context.Context, id uint32, record string
 }
 
 func (r *Redis) GetTentacleHistory(ctx context.Context, id uint32, from, to time.Time) ([]string, error) {
-	key := r.genHistoryKey(id)
+	key := r.genHistKey(id)
 	result, err := r.client.ZRangeByScore(ctx, key, &redis.ZRangeBy{
 		Min: strconv.FormatInt(from.UnixMilli(), 10),
 		Max: strconv.FormatInt(to.UnixMilli(), 10),
@@ -312,6 +312,6 @@ func (r *Redis) genUserKey(id uint32) string {
 	return fmt.Sprintf("%s@%d", r.prefix, id)
 }
 
-func (r *Redis) genHistoryKey(id uint32) string {
+func (r *Redis) genHistKey(id uint32) string {
 	return fmt.Sprintf("%s@history@%d", r.prefix, id)
 }

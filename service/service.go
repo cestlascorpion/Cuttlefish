@@ -13,9 +13,9 @@ import (
 
 type Server struct {
 	*pb.UnimplementedCuttlefishServer
-	dao     *storage.Redis
-	channel chan *meta
-	cancel  []context.CancelFunc
+	dao        *storage.Redis
+	histChan   chan *histMeta
+	histCancel []context.CancelFunc
 }
 
 func NewServer(ctx context.Context, conf *utils.Config) (*Server, error) {
@@ -31,9 +31,9 @@ func NewServer(ctx context.Context, conf *utils.Config) (*Server, error) {
 	}
 
 	svr := &Server{
-		dao:     d,
-		channel: make(chan *meta, defaultChanBuffer),
-		cancel:  make([]context.CancelFunc, 0),
+		dao:        d,
+		histChan:   make(chan *histMeta, defaultChanBuffer),
+		histCancel: make([]context.CancelFunc, 0),
 	}
 
 	for i := 0; i < defaultParallel; i++ {
@@ -43,18 +43,19 @@ func NewServer(ctx context.Context, conf *utils.Config) (*Server, error) {
 				select {
 				case <-ctx.Done():
 					return
-				case m, ok := <-svr.channel:
+				case m, ok := <-svr.histChan:
 					if !ok {
 						return
 					}
 					if m != nil {
-						_ = svr.handleMeta(ctx, m)
+						_ = svr.handleHistMeta(ctx, m)
 					}
 				}
 			}
 		}(x)
-		svr.cancel = append(svr.cancel, cancel)
+		svr.histCancel = append(svr.histCancel, cancel)
 	}
+
 	return svr, nil
 }
 
@@ -130,13 +131,16 @@ func (s *Server) SetTentacle(ctx context.Context, in *pb.SetTentacleReq) (*pb.Se
 		return out, err
 	}
 	out.Online = !exists
+
+	ts := time.Now()
 	if !exists {
-		s.channel <- &meta{
+		s.histChan <- &histMeta{
 			id:     in.Id,
-			ts:     time.Now(),
+			ts:     ts,
 			status: true,
 		}
 	}
+
 	return out, nil
 }
 
@@ -157,12 +161,13 @@ func (s *Server) BatchSetTentacle(ctx context.Context, in *pb.BatchSetTentacleRe
 		return out, err
 	}
 
+	ts := time.Now()
 	for id, exists := range existsMap {
 		out.Result[id] = !exists
 		if !exists {
-			s.channel <- &meta{
+			s.histChan <- &histMeta{
 				id:     id,
-				ts:     time.Now(),
+				ts:     ts,
 				status: true,
 			}
 		}
@@ -188,7 +193,7 @@ func (s *Server) DelTentacle(ctx context.Context, in *pb.DelTentacleReq) (*pb.De
 	}
 	out.Offline = !exists
 	if !exists {
-		s.channel <- &meta{
+		s.histChan <- &histMeta{
 			id:     in.Id,
 			ts:     time.Now(),
 			status: false,
@@ -217,7 +222,7 @@ func (s *Server) BatchDelTentacle(ctx context.Context, in *pb.BatchDelTentacleRe
 	for id, exists := range resultMap {
 		out.Result[id] = !exists
 		if !exists {
-			s.channel <- &meta{
+			s.histChan <- &histMeta{
 				id:     id,
 				ts:     time.Now(),
 				status: false,
@@ -252,21 +257,18 @@ func (s *Server) GetTentacleHistory(ctx context.Context, in *pb.GetTentacleHisto
 }
 
 func (s *Server) Close(ctx context.Context) error {
-	close(s.channel)
-	log.Info("meta channel closed")
-
-	for i := range s.cancel {
-		s.cancel[i]()
+	close(s.histChan)
+	log.Info("histMeta chan closed")
+	for i := range s.histCancel {
+		s.histCancel[i]()
 	}
-	log.Info("go routine canceled")
-
-	for m := range s.channel {
+	log.Info("histMeta routine canceled")
+	for m := range s.histChan {
 		if m != nil {
-			_ = s.handleMeta(ctx, m)
+			_ = s.handleHistMeta(ctx, m)
 		}
 	}
-	log.Info("mete channel clear")
-
+	log.Info("histMeta chan clear")
 	return s.dao.Close(ctx)
 }
 
@@ -277,13 +279,13 @@ const (
 	defaultParallel   = 10
 )
 
-type meta struct {
+type histMeta struct {
 	id     uint32
 	ts     time.Time
 	status bool
 }
 
-func (s *Server) handleMeta(ctx context.Context, data *meta) error {
+func (s *Server) handleHistMeta(ctx context.Context, data *histMeta) error {
 	info := &pb.HistoryInfo{
 		St: data.status,
 		Ts: data.ts.UnixMilli(),
