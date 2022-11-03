@@ -214,7 +214,7 @@ func TestRedis_GetTentacleHistory(t *testing.T) {
 		return
 	}
 
-	result, err := dao.GetTentacleHistory(context.Background(), 1234, time.Now().AddDate(0, 0, -2), time.Now())
+	result, err := dao.GetTentacleHistory(context.Background(), 1234, time.Now().AddDate(0, 0, -7), time.Now())
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

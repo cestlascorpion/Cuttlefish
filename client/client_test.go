@@ -295,7 +295,7 @@ func TestClient_GetTentacleHistory(t *testing.T) {
 	}
 	defer client.Close(context.Background())
 
-	result, err := client.GetTentacleHistory(context.Background(), 1234, time.Now().AddDate(0, 0, -1), time.Now())
+	result, err := client.GetTentacleHistory(context.Background(), 1234, time.Now().AddDate(0, 0, -7), time.Now())
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
